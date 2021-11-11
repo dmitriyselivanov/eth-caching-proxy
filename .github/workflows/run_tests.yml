@@ -30,6 +30,11 @@ jobs:
         with:
           go-version: '${{ matrix.go_versions }}'
 
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u golang.org/x/lint/golint
+
       - name: Restore Go modules from cache
         uses: actions/cache@v2
         with:
