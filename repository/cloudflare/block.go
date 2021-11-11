@@ -3,6 +3,7 @@ package cloudflare
 import (
 	"context"
 	"eth-caching-proxy/model"
+	"eth-caching-proxy/repository"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
@@ -12,7 +13,8 @@ type blockRepository struct {
 	client *ethclient.Client
 }
 
-func NewBlockRepository(client *ethclient.Client) *blockRepository {
+// NewBlockRepository creates new block repository instance
+func NewBlockRepository(client *ethclient.Client) repository.BlockRepository {
 	return &blockRepository{client: client}
 }
 

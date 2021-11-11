@@ -1,6 +1,7 @@
 package simplelru
 
 import (
+	"eth-caching-proxy/cache"
 	"eth-caching-proxy/config"
 	"eth-caching-proxy/model"
 	"github.com/hashicorp/golang-lru"
@@ -13,7 +14,7 @@ type blockCache struct {
 }
 
 // NewBlockCache creates an instance of blockCache
-func NewBlockCache() *blockCache {
+func NewBlockCache() cache.BlockCache {
 	conf := config.GetConfig()
 
 	c, err := lru.New(conf.Cache.MaxBlocks)

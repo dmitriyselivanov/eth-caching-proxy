@@ -15,15 +15,15 @@ func TestBlockController_TxFromBlockByHash(t *testing.T) {
 	ts := httptest.NewServer(NewRouter())
 	defer ts.Close()
 
-	for i := range blockControllerTestCases_TxFromBlockByHash {
-		resp, err := http.Get(fmt.Sprintf("%s/block/%s/txs/%s", ts.URL, blockControllerTestCases_TxFromBlockByHash[i].blockNumber.String(), blockControllerTestCases_TxFromBlockByHash[i].txHash.String()))
+	for i := range blockControllerTestCasesTxFromBlockByHash {
+		resp, err := http.Get(fmt.Sprintf("%s/block/%s/txs/%s", ts.URL, blockControllerTestCasesTxFromBlockByHash[i].blockNumber.String(), blockControllerTestCasesTxFromBlockByHash[i].txHash.String()))
 
 		if err != nil {
 			t.Fatalf("Expected no error, got %v", err)
 		}
 
-		if resp.StatusCode != blockControllerTestCases_TxFromBlockByHash[i].expectedStatusCode {
-			t.Fatalf("Expected status code %d, got %v", blockControllerTestCases_TxFromBlockByHash[i].expectedStatusCode, resp.StatusCode)
+		if resp.StatusCode != blockControllerTestCasesTxFromBlockByHash[i].expectedStatusCode {
+			t.Fatalf("Expected status code %d, got %v", blockControllerTestCasesTxFromBlockByHash[i].expectedStatusCode, resp.StatusCode)
 		}
 
 		val, ok := resp.Header["Content-Type"]
@@ -34,12 +34,12 @@ func TestBlockController_TxFromBlockByHash(t *testing.T) {
 		}
 
 		// Assert that it was set as expected
-		if val[0] != blockControllerTestCases_TxFromBlockByHash[i].expectedContentType {
-			t.Fatalf("Expected %s, got %s", blockControllerTestCases_TxFromBlockByHash[i].expectedContentType, val[0])
+		if val[0] != blockControllerTestCasesTxFromBlockByHash[i].expectedContentType {
+			t.Fatalf("Expected %s, got %s", blockControllerTestCasesTxFromBlockByHash[i].expectedContentType, val[0])
 		}
 
-		if blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction == nil {
-			t.Logf("Pass: %s", blockControllerTestCases_TxFromBlockByHash[i].description)
+		if blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction == nil {
+			t.Logf("Pass: %s", blockControllerTestCasesTxFromBlockByHash[i].description)
 			return
 		}
 
@@ -61,31 +61,31 @@ func TestBlockController_TxFromBlockByHash(t *testing.T) {
 		}
 
 		// Gas
-		if tx.Gas != blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Gas {
-			t.Fatalf("FAIL Gas: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByHash[i].description, blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Gas, tx.Gas, i)
+		if tx.Gas != blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Gas {
+			t.Fatalf("FAIL Gas: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByHash[i].description, blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Gas, tx.Gas, i)
 		}
 
-		// ChainId
-		if tx.ChainId.Int64() != blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.ChainId.Int64() {
-			t.Fatalf("FAIL ChainId: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByHash[i].description, blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.ChainId.Int64(), tx.ChainId.Int64(), i)
+		// ChainID
+		if tx.ChainID.Int64() != blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.ChainID.Int64() {
+			t.Fatalf("FAIL ChainID: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByHash[i].description, blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.ChainID.Int64(), tx.ChainID.Int64(), i)
 		}
 
 		// Hash
-		if tx.Hash != blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Hash {
-			t.Fatalf("FAIL Hash: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByHash[i].description, blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Hash, tx.Hash, i)
+		if tx.Hash != blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Hash {
+			t.Fatalf("FAIL Hash: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByHash[i].description, blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Hash, tx.Hash, i)
 		}
 
 		// GasPrice
-		if tx.GasPrice.Int64() != blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.GasPrice.Int64() {
-			t.Fatalf("FAIL GasPrice: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByHash[i].description, blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.GasPrice.Int64(), tx.GasPrice.Int64(), i)
+		if tx.GasPrice.Int64() != blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.GasPrice.Int64() {
+			t.Fatalf("FAIL GasPrice: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByHash[i].description, blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.GasPrice.Int64(), tx.GasPrice.Int64(), i)
 		}
 
 		// Nonce
-		if tx.Nonce != blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Nonce {
-			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByHash[i].description, blockControllerTestCases_TxFromBlockByHash[i].expectedTransaction.Nonce, tx.Nonce, i)
+		if tx.Nonce != blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Nonce {
+			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByHash[i].description, blockControllerTestCasesTxFromBlockByHash[i].expectedTransaction.Nonce, tx.Nonce, i)
 		}
 
-		t.Logf("Pass: %s", blockControllerTestCases_BlockByNumber[i].description)
+		t.Logf("Pass: %s", blockControllerTestCasesBlockByNumber[i].description)
 	}
 }
 
@@ -93,15 +93,15 @@ func TestBlockController_TxFromBlockByIndex(t *testing.T) {
 	ts := httptest.NewServer(NewRouter())
 	defer ts.Close()
 
-	for i := range blockControllerTestCases_TxFromBlockByIndex {
-		resp, err := http.Get(fmt.Sprintf("%s/block/%s/txs/%d", ts.URL, blockControllerTestCases_TxFromBlockByIndex[i].blockNumber.String(), blockControllerTestCases_TxFromBlockByIndex[i].txIndex))
+	for i := range blockControllerTestCasesTxFromBlockByIndex {
+		resp, err := http.Get(fmt.Sprintf("%s/block/%s/txs/%d", ts.URL, blockControllerTestCasesTxFromBlockByIndex[i].blockNumber.String(), blockControllerTestCasesTxFromBlockByIndex[i].txIndex))
 
 		if err != nil {
 			t.Fatalf("Expected no error, got %v", err)
 		}
 
-		if resp.StatusCode != blockControllerTestCases_TxFromBlockByIndex[i].expectedStatusCode {
-			t.Fatalf("Expected status code %d, got %v", blockControllerTestCases_TxFromBlockByIndex[i].expectedStatusCode, resp.StatusCode)
+		if resp.StatusCode != blockControllerTestCasesTxFromBlockByIndex[i].expectedStatusCode {
+			t.Fatalf("Expected status code %d, got %v", blockControllerTestCasesTxFromBlockByIndex[i].expectedStatusCode, resp.StatusCode)
 		}
 
 		val, ok := resp.Header["Content-Type"]
@@ -112,12 +112,12 @@ func TestBlockController_TxFromBlockByIndex(t *testing.T) {
 		}
 
 		// Assert that it was set as expected
-		if val[0] != blockControllerTestCases_TxFromBlockByIndex[i].expectedContentType {
-			t.Fatalf("Expected %s, got %s", blockControllerTestCases_TxFromBlockByIndex[i].expectedContentType, val[0])
+		if val[0] != blockControllerTestCasesTxFromBlockByIndex[i].expectedContentType {
+			t.Fatalf("Expected %s, got %s", blockControllerTestCasesTxFromBlockByIndex[i].expectedContentType, val[0])
 		}
 
-		if blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction == nil {
-			t.Logf("Pass: %s", blockControllerTestCases_TxFromBlockByIndex[i].description)
+		if blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction == nil {
+			t.Logf("Pass: %s", blockControllerTestCasesTxFromBlockByIndex[i].description)
 			return
 		}
 
@@ -139,31 +139,31 @@ func TestBlockController_TxFromBlockByIndex(t *testing.T) {
 		}
 
 		// Gas
-		if tx.Gas != blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Gas {
-			t.Fatalf("FAIL Gas: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByIndex[i].description, blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Gas, tx.Gas, i)
+		if tx.Gas != blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Gas {
+			t.Fatalf("FAIL Gas: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByIndex[i].description, blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Gas, tx.Gas, i)
 		}
 
-		// ChainId
-		if tx.ChainId.Int64() != blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.ChainId.Int64() {
-			t.Fatalf("FAIL ChainId: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByIndex[i].description, blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.ChainId.Int64(), tx.ChainId.Int64(), i)
+		// ChainID
+		if tx.ChainID.Int64() != blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.ChainID.Int64() {
+			t.Fatalf("FAIL ChainID: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByIndex[i].description, blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.ChainID.Int64(), tx.ChainID.Int64(), i)
 		}
 
 		// Hash
-		if tx.Hash != blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Hash {
-			t.Fatalf("FAIL Hash: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByIndex[i].description, blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Hash, tx.Hash, i)
+		if tx.Hash != blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Hash {
+			t.Fatalf("FAIL Hash: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByIndex[i].description, blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Hash, tx.Hash, i)
 		}
 
 		// GasPrice
-		if tx.GasPrice.Int64() != blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.GasPrice.Int64() {
-			t.Fatalf("FAIL GasPrice: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByIndex[i].description, blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.GasPrice.Int64(), tx.GasPrice.Int64(), i)
+		if tx.GasPrice.Int64() != blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.GasPrice.Int64() {
+			t.Fatalf("FAIL GasPrice: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByIndex[i].description, blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.GasPrice.Int64(), tx.GasPrice.Int64(), i)
 		}
 
 		// Nonce
-		if tx.Nonce != blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Nonce {
-			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_TxFromBlockByIndex[i].description, blockControllerTestCases_TxFromBlockByIndex[i].expectedTransaction.Nonce, tx.Nonce, i)
+		if tx.Nonce != blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Nonce {
+			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesTxFromBlockByIndex[i].description, blockControllerTestCasesTxFromBlockByIndex[i].expectedTransaction.Nonce, tx.Nonce, i)
 		}
 
-		t.Logf("Pass: %s", blockControllerTestCases_BlockByNumber[i].description)
+		t.Logf("Pass: %s", blockControllerTestCasesBlockByNumber[i].description)
 	}
 }
 
@@ -171,15 +171,15 @@ func TestBlockController_BlockByNumber(t *testing.T) {
 	ts := httptest.NewServer(NewRouter())
 	defer ts.Close()
 
-	for i := range blockControllerTestCases_BlockByNumber {
-		resp, err := http.Get(fmt.Sprintf("%s/block/%s", ts.URL, blockControllerTestCases_BlockByNumber[i].blockNumber.String()))
+	for i := range blockControllerTestCasesBlockByNumber {
+		resp, err := http.Get(fmt.Sprintf("%s/block/%s", ts.URL, blockControllerTestCasesBlockByNumber[i].blockNumber.String()))
 
 		if err != nil {
 			t.Fatalf("Expected no error, got %v", err)
 		}
 
-		if resp.StatusCode != blockControllerTestCases_BlockByNumber[i].expectedStatusCode {
-			t.Fatalf("Expected status code %d, got %v", blockControllerTestCases_BlockByNumber[i].expectedStatusCode, resp.StatusCode)
+		if resp.StatusCode != blockControllerTestCasesBlockByNumber[i].expectedStatusCode {
+			t.Fatalf("Expected status code %d, got %v", blockControllerTestCasesBlockByNumber[i].expectedStatusCode, resp.StatusCode)
 		}
 
 		val, ok := resp.Header["Content-Type"]
@@ -190,12 +190,12 @@ func TestBlockController_BlockByNumber(t *testing.T) {
 		}
 
 		// Assert that it was set as expected
-		if val[0] != blockControllerTestCases_BlockByNumber[i].expectedContentType {
-			t.Fatalf("Expected %s, got %s", blockControllerTestCases_BlockByNumber[i].expectedContentType, val[0])
+		if val[0] != blockControllerTestCasesBlockByNumber[i].expectedContentType {
+			t.Fatalf("Expected %s, got %s", blockControllerTestCasesBlockByNumber[i].expectedContentType, val[0])
 		}
 
-		if blockControllerTestCases_BlockByNumber[i].expectedBlock == nil {
-			t.Logf("Pass: %s", blockControllerTestCases_BlockByNumber[i].description)
+		if blockControllerTestCasesBlockByNumber[i].expectedBlock == nil {
+			t.Logf("Pass: %s", blockControllerTestCasesBlockByNumber[i].description)
 			return
 		}
 
@@ -217,35 +217,35 @@ func TestBlockController_BlockByNumber(t *testing.T) {
 		}
 
 		// Number
-		if block.Number.Int64() != blockControllerTestCases_BlockByNumber[i].expectedBlock.Number.Int64() {
-			t.Fatalf("FAIL Number: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_BlockByNumber[i].description, blockControllerTestCases_BlockByNumber[i].expectedBlock.Number.Int64(), block.Number.Int64(), i)
+		if block.Number.Int64() != blockControllerTestCasesBlockByNumber[i].expectedBlock.Number.Int64() {
+			t.Fatalf("FAIL Number: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesBlockByNumber[i].description, blockControllerTestCasesBlockByNumber[i].expectedBlock.Number.Int64(), block.Number.Int64(), i)
 		}
 
 		// BaseFee
-		if block.BaseFee.Int64() != blockControllerTestCases_BlockByNumber[i].expectedBlock.BaseFee.Int64() {
-			t.Fatalf("FAIL BaseFee: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_BlockByNumber[i].description, blockControllerTestCases_BlockByNumber[i].expectedBlock.BaseFee.Int64(), block.BaseFee.Int64(), i)
+		if block.BaseFee.Int64() != blockControllerTestCasesBlockByNumber[i].expectedBlock.BaseFee.Int64() {
+			t.Fatalf("FAIL BaseFee: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesBlockByNumber[i].description, blockControllerTestCasesBlockByNumber[i].expectedBlock.BaseFee.Int64(), block.BaseFee.Int64(), i)
 		}
 
 		// Difficulty
-		if block.Difficulty.Int64() != blockControllerTestCases_BlockByNumber[i].expectedBlock.Difficulty.Int64() {
-			t.Fatalf("FAIL Difficulty: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_BlockByNumber[i].description, blockControllerTestCases_BlockByNumber[i].expectedBlock.Difficulty.Int64(), block.Difficulty.Int64(), i)
+		if block.Difficulty.Int64() != blockControllerTestCasesBlockByNumber[i].expectedBlock.Difficulty.Int64() {
+			t.Fatalf("FAIL Difficulty: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesBlockByNumber[i].description, blockControllerTestCasesBlockByNumber[i].expectedBlock.Difficulty.Int64(), block.Difficulty.Int64(), i)
 		}
 
 		// Nonce
-		if block.Nonce != blockControllerTestCases_BlockByNumber[i].expectedBlock.Nonce {
-			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_BlockByNumber[i].description, blockControllerTestCases_BlockByNumber[i].expectedBlock.Nonce, block.Nonce, i)
+		if block.Nonce != blockControllerTestCasesBlockByNumber[i].expectedBlock.Nonce {
+			t.Fatalf("FAIL Nonce: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesBlockByNumber[i].description, blockControllerTestCasesBlockByNumber[i].expectedBlock.Nonce, block.Nonce, i)
 		}
 
 		// Time
-		if block.Time != blockControllerTestCases_BlockByNumber[i].expectedBlock.Time {
-			t.Fatalf("FAIL Time: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCases_BlockByNumber[i].description, blockControllerTestCases_BlockByNumber[i].expectedBlock.Time, block.Time, i)
+		if block.Time != blockControllerTestCasesBlockByNumber[i].expectedBlock.Time {
+			t.Fatalf("FAIL Time: %s\nExpected: %#v\nActual: %#v\nTestcase: %#v", blockControllerTestCasesBlockByNumber[i].description, blockControllerTestCasesBlockByNumber[i].expectedBlock.Time, block.Time, i)
 		}
 
-		t.Logf("Pass: %s", blockControllerTestCases_BlockByNumber[i].description)
+		t.Logf("Pass: %s", blockControllerTestCasesBlockByNumber[i].description)
 	}
 }
 
-var blockControllerTestCases_BlockByNumber = []struct {
+var blockControllerTestCasesBlockByNumber = []struct {
 	description         string
 	blockNumber         *big.Int
 	expectedBlock       *model.BlockResponseDTO
@@ -276,14 +276,14 @@ var blockControllerTestCases_BlockByNumber = []struct {
 }
 
 type testTransaction struct {
-	Gas      uint64   `json:"gas"`
-	ChainId  *big.Int `json:"chainId"`
-	Hash     string   `json:"hash"`
+	Gas     uint64   `json:"gas"`
+	ChainID *big.Int `json:"chainId"`
+	Hash    string   `json:"hash"`
 	GasPrice *big.Int `json:"gasPrice"`
 	Nonce    uint64   `json:"nonce"`
 }
 
-var blockControllerTestCases_TxFromBlockByIndex = []struct {
+var blockControllerTestCasesTxFromBlockByIndex = []struct {
 	description         string
 	blockNumber         *big.Int
 	txIndex             int
@@ -306,7 +306,7 @@ var blockControllerTestCases_TxFromBlockByIndex = []struct {
 		txIndex:     1,
 		expectedTransaction: &testTransaction{
 			Gas:      uint64(1000000),
-			ChainId:  big.NewInt(1),
+			ChainID:  big.NewInt(1),
 			Hash:     "0x856ed296eb7f87619393143cc28ae5705e22866709ff79cd93af71d8132037c0",
 			GasPrice: big.NewInt(119586681073),
 			Nonce:    uint64(21042),
@@ -316,7 +316,7 @@ var blockControllerTestCases_TxFromBlockByIndex = []struct {
 	},
 }
 
-var blockControllerTestCases_TxFromBlockByHash = []struct {
+var blockControllerTestCasesTxFromBlockByHash = []struct {
 	description         string
 	blockNumber         *big.Int
 	txHash              common.Hash
@@ -339,7 +339,7 @@ var blockControllerTestCases_TxFromBlockByHash = []struct {
 		txHash:      common.HexToHash("0x856ed296eb7f87619393143cc28ae5705e22866709ff79cd93af71d8132037c0"),
 		expectedTransaction: &testTransaction{
 			Gas:      uint64(1000000),
-			ChainId:  big.NewInt(1),
+			ChainID:  big.NewInt(1),
 			Hash:     "0x856ed296eb7f87619393143cc28ae5705e22866709ff79cd93af71d8132037c0",
 			GasPrice: big.NewInt(119586681073),
 			Nonce:    uint64(21042),

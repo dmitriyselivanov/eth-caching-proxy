@@ -12,19 +12,25 @@ import (
 )
 
 const (
+	// ErrBlockNotFound constant for error message when block is not found
 	ErrBlockNotFound = "not found"
+
+	// ErrTxNotFound constant for error message when transaction is not found
 	ErrTxNotFound    = "not found"
 )
 
-type ethBlockController struct {
+// EthBlockController is a block controller executed by GIN framework
+type EthBlockController struct {
 	services *service.Manager
 }
 
-func NewEthBlockController(services *service.Manager) *ethBlockController {
-	return &ethBlockController{services: services}
+// NewEthBlockController creates a new block controller
+func NewEthBlockController(services *service.Manager) *EthBlockController {
+	return &EthBlockController{services: services}
 }
 
-func (ctrl *ethBlockController) RegisterRoutes(r *gin.Engine) {
+// RegisterRoutes registers routes to use in block controller
+func (ctrl *EthBlockController) RegisterRoutes(r *gin.Engine) {
 	r.GET("/block/:blockNumber", ctrl.GetBlockByNumber)
 	r.GET("/block/latest", ctrl.GetLatestBlock)
 
@@ -32,7 +38,8 @@ func (ctrl *ethBlockController) RegisterRoutes(r *gin.Engine) {
 	r.GET("/block/latest/txs/:txNumOrHash", ctrl.GetTxFromLatestBlock)
 }
 
-func (ctrl *ethBlockController) GetLatestBlock(c *gin.Context) {
+// GetLatestBlock is executed on "/block/latest" request
+func (ctrl *EthBlockController) GetLatestBlock(c *gin.Context) {
 	blockDTO, err := ctrl.services.BlockService.LatestBlock()
 	if err != nil && err.Error() == ErrBlockNotFound {
 		// 404 Not found
@@ -50,7 +57,8 @@ func (ctrl *ethBlockController) GetLatestBlock(c *gin.Context) {
 	c.JSON(http.StatusOK, blockDTO)
 }
 
-func (ctrl *ethBlockController) GetBlockByNumber(c *gin.Context) {
+// GetBlockByNumber is executed on "/block/:blockNumber" request
+func (ctrl *EthBlockController) GetBlockByNumber(c *gin.Context) {
 	// Parse block number from request path
 	blockNumber64, err := strconv.ParseInt(c.Param("blockNumber"), 10, 64)
 	if err != nil {
@@ -79,7 +87,8 @@ func (ctrl *ethBlockController) GetBlockByNumber(c *gin.Context) {
 	c.JSON(http.StatusOK, blockDTO)
 }
 
-func (ctrl *ethBlockController) GetTxFromLatestBlock(c *gin.Context) {
+// GetTxFromLatestBlock is executed on "/block/latest/txs/:txNumOrHash" request
+func (ctrl *EthBlockController) GetTxFromLatestBlock(c *gin.Context) {
 	txNumOrHash := c.Param("txNumOrHash")
 
 	// Try to parse transaction number from request path
@@ -95,7 +104,8 @@ func (ctrl *ethBlockController) GetTxFromLatestBlock(c *gin.Context) {
 	ctrl.txFromLatestBlockByHash(c, txHash)
 }
 
-func (ctrl *ethBlockController) GetTxFromBlock(c *gin.Context) {
+// GetTxFromBlock is executed on "/block/:blockNumber/txs/:txNumOrHash" request
+func (ctrl *EthBlockController) GetTxFromBlock(c *gin.Context) {
 	// Parse block number from request path
 	blockNumber64, err := strconv.ParseInt(c.Param("blockNumber"), 10, 64)
 	if err != nil {
@@ -120,7 +130,7 @@ func (ctrl *ethBlockController) GetTxFromBlock(c *gin.Context) {
 	ctrl.txFromBlockByHash(c, blockNumber, txHash)
 }
 
-func (ctrl *ethBlockController) txFromBlockByIndex(c *gin.Context, blockNumber *big.Int, txNumber int) {
+func (ctrl *EthBlockController) txFromBlockByIndex(c *gin.Context, blockNumber *big.Int, txNumber int) {
 	tx, e := ctrl.services.BlockService.TxFromBlockByIndex(blockNumber, txNumber)
 	if e != nil && e.Error() == ErrTxNotFound {
 		// 404 Not Found
@@ -138,7 +148,7 @@ func (ctrl *ethBlockController) txFromBlockByIndex(c *gin.Context, blockNumber *
 	c.JSON(http.StatusOK, tx)
 }
 
-func (ctrl *ethBlockController) txFromBlockByHash(c *gin.Context, blockNumber *big.Int, txHash common.Hash) {
+func (ctrl *EthBlockController) txFromBlockByHash(c *gin.Context, blockNumber *big.Int, txHash common.Hash) {
 	tx, e := ctrl.services.BlockService.TxFromBlockByHash(blockNumber, txHash)
 	if e != nil && e.Error() == ErrTxNotFound {
 		// 404 Not Found
@@ -156,7 +166,7 @@ func (ctrl *ethBlockController) txFromBlockByHash(c *gin.Context, blockNumber *b
 	c.JSON(http.StatusOK, tx)
 }
 
-func (ctrl *ethBlockController) txFromLatestBlockByIndex(c *gin.Context, txNumber int) {
+func (ctrl *EthBlockController) txFromLatestBlockByIndex(c *gin.Context, txNumber int) {
 	tx, e := ctrl.services.BlockService.TxFromLatestBlockByIndex(txNumber)
 	if e != nil && e.Error() == ErrTxNotFound {
 		// 404 Not Found
@@ -174,7 +184,7 @@ func (ctrl *ethBlockController) txFromLatestBlockByIndex(c *gin.Context, txNumbe
 	c.JSON(http.StatusOK, tx)
 }
 
-func (ctrl *ethBlockController) txFromLatestBlockByHash(c *gin.Context, txHash common.Hash) {
+func (ctrl *EthBlockController) txFromLatestBlockByHash(c *gin.Context, txHash common.Hash) {
 	// Get tx by hash from service
 	tx, err := ctrl.services.BlockService.TxFromLatestBlockByHash(txHash)
 
