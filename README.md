@@ -154,5 +154,6 @@ HTTP 200 OK
 ## TODOs
 - Increase test coverage
 - Isolate `ethclient` domain models in `repository/cloudflare` package (now only `types.Block` is isolated, but not `types.Transaction` and `types.Bloom`)
-- Add dto struct for Transaction response
+- Add data transfer object for transaction response
 - Add separate cache for last 20 blocks with block hash checks on request
+- Add separate cache for transactions only (now if you request the transaction the whole block is caching)
