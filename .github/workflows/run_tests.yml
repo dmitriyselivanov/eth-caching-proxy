@@ -13,17 +13,6 @@ env:
   GO111MODULE: "on"
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: latest
-
   tests:
     name: Go
     runs-on: ubuntu-20.04
@@ -52,3 +41,8 @@ jobs:
 
       - name: Run tests
         run: go test -v -race ./...
+
+      - name: Run vet & lint
+        run: |
+          go vet .
+          golint .
