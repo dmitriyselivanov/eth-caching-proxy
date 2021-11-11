@@ -1,0 +1,13 @@
+version: "2"
+
+volumes:
+  redisdata:
+
+services:
+  eth-caching-proxy:
+    container_name: eth-caching-proxy
+    restart: always
+    build: .
+    image: eth-caching-proxy:latest
+    ports:
+      - ${API_URL}:8000

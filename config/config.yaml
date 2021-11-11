@@ -1,0 +1,11 @@
+server:
+  runmode: "debug" # or "release"
+  httpport: 8000
+  readtimeout: 60
+  writetimeout: 60
+
+cache:
+  maxblocks: 128
+
+cloudflare:
+  url: "https://cloudflare-eth.com"
