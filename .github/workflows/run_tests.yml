@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+
+env:
+  GO111MODULE: "on"
+
+jobs:
+
+  tests:
+    name: Go
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go_versions: [ '1.13' ]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '${{ matrix.go_versions }}'
+
+      - name: Restore Go modules from cache
+        uses: actions/cache@v2
+        with:
+          path: /home/runner/go/pkg/mod
+          key: deps-${{ hashFiles('go.sum') }}
+
+      - name: Update Go modules
+        run: go mod download -json
+
+      - name: Run tests
+        run: go test -v -race ./...
