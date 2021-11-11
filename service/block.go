@@ -15,6 +15,7 @@ type ethBlockService struct {
 	cache      *cache.Cache
 }
 
+// NewEthBlockService creates new ethBlockService with given repo and cache
 func NewEthBlockService(repository *repository.Repository, cache *cache.Cache) *ethBlockService {
 	return &ethBlockService{repository: repository, cache: cache}
 }

@@ -12,6 +12,7 @@ type blockCache struct {
 	cache *lru.Cache
 }
 
+// NewBlockCache creates an instance of blockCache
 func NewBlockCache() *blockCache {
 	conf := config.GetConfig()
 

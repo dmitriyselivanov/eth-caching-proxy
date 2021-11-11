@@ -7,6 +7,7 @@ import (
 	"math/big"
 )
 
+// EthBlockService is a service which provides methods to get eth blocks and transactions
 type EthBlockService interface {
 	LatestBlock() (*model.BlockResponseDTO, error)
 	BlockByNumber(blockNumber *big.Int) (*model.BlockResponseDTO, error)
