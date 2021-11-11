@@ -8,15 +8,18 @@ import (
 	"math/big"
 )
 
-type blockRepository struct {
+// EthBlockRepository is a block repository backed by Cloudflare ethereum gateway
+type EthBlockRepository struct {
 	client *ethclient.Client
 }
 
-func NewBlockRepository(client *ethclient.Client) *blockRepository {
-	return &blockRepository{client: client}
+// NewBlockRepository creates new block repository instance
+func NewBlockRepository(client *ethclient.Client) *EthBlockRepository {
+	return &EthBlockRepository{client: client}
 }
 
-func (r *blockRepository) BlockByNumber(number *big.Int) (*model.Block, error) {
+// BlockByNumber returns a block by number from eth network
+func (r *EthBlockRepository) BlockByNumber(number *big.Int) (*model.Block, error) {
 	ethBlock, err := r.client.BlockByNumber(context.Background(), number)
 	if err != nil {
 		return nil, err
@@ -25,7 +28,8 @@ func (r *blockRepository) BlockByNumber(number *big.Int) (*model.Block, error) {
 	return newBlock(ethBlock), nil
 }
 
-func (r *blockRepository) LatestBlock() (*model.Block, error) {
+// LatestBlock returns a latest block from eth network
+func (r *EthBlockRepository) LatestBlock() (*model.Block, error) {
 	header, err := r.LatestBlockHeader()
 	if err != nil {
 		return nil, err
@@ -39,11 +43,13 @@ func (r *blockRepository) LatestBlock() (*model.Block, error) {
 	return newBlock(ethBlock), nil
 }
 
-func (r *blockRepository) LatestBlockHeader() (*types.Header, error) {
+// LatestBlockHeader returns a latest block header from eth network
+func (r *EthBlockRepository) LatestBlockHeader() (*types.Header, error) {
 	return r.client.HeaderByNumber(context.Background(), nil)
 }
 
-func (r *blockRepository) BlockHeaderByNumber(blockNumber *big.Int) (*types.Header, error) {
+// BlockHeaderByNumber returns a block header by number from eth network
+func (r *EthBlockRepository) BlockHeaderByNumber(blockNumber *big.Int) (*types.Header, error) {
 	return r.client.HeaderByNumber(context.Background(), blockNumber)
 }
 

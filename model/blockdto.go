@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// BlockResponseDTO is a data transfer object for model.Block
 type BlockResponseDTO struct {
 	Number       *big.Int           `json:"number"`
 	Header       *types.Header      `json:"header"`
@@ -31,6 +32,7 @@ type BlockResponseDTO struct {
 	Transactions types.Transactions `json:"transactions"`
 }
 
+// NewBlockResponseDTO creates and returns BlockResponseDTO instance
 func NewBlockResponseDTO(from *Block) *BlockResponseDTO {
 	return &BlockResponseDTO{
 		Number:       from.Number,

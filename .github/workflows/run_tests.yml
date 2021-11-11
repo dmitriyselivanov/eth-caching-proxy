@@ -13,7 +13,6 @@ env:
   GO111MODULE: "on"
 
 jobs:
-
   tests:
     name: Go
     runs-on: ubuntu-20.04
@@ -31,6 +30,11 @@ jobs:
         with:
           go-version: '${{ matrix.go_versions }}'
 
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u golang.org/x/lint/golint
+
       - name: Restore Go modules from cache
         uses: actions/cache@v2
         with:
@@ -42,3 +46,8 @@ jobs:
 
       - name: Run tests
         run: go test -v -race ./...
+
+      - name: Run vet & lint
+        run: |
+          go vet .
+          golint .

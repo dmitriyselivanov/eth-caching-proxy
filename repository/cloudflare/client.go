@@ -9,12 +9,13 @@ import (
 
 var client *ethclient.Client
 
+// GetClient returns ethclient instance
 func GetClient() *ethclient.Client {
 	var once sync.Once
 	once.Do(func() {
 		conf := config.GetConfig()
 
-		c, err := ethclient.Dial(conf.Cloudflare.Url)
+		c, err := ethclient.Dial(conf.Cloudflare.URL)
 		if err != nil {
 			log.Fatalf("error connecting to cloudflare")
 		}

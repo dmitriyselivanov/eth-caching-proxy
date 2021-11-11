@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Block is a struct that represents ethereum block
 type Block struct {
 	Number       *big.Int           `json:"number"`
 	Header       *types.Header      `json:"header"`
@@ -31,8 +32,10 @@ type Block struct {
 	Transactions types.Transactions `json:"transactions"`
 }
 
+// Txs returns all transactions within a block
 func (b *Block) Txs() types.Transactions { return b.Transactions }
 
+// Tx returns a transaction within a block by hash
 func (b *Block) Tx(hash common.Hash) *types.Transaction {
 	for _, transaction := range b.Transactions {
 		if transaction.Hash() == hash {

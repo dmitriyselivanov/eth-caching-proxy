@@ -8,6 +8,7 @@ import (
 	"log"
 )
 
+// NewRouter creates a new Gin router
 func NewRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())

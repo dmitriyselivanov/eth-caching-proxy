@@ -6,6 +6,7 @@ import (
 	"math/big"
 )
 
+// BlockRepository provides methods to get blocks and block headers from ethereum network
 type BlockRepository interface {
 	BlockByNumber(number *big.Int) (*model.Block, error)
 	LatestBlock() (*model.Block, error)

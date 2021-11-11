@@ -12,7 +12,7 @@ import (
 func main() {
 	conf := config.GetConfig()
 
-	endPoint := fmt.Sprintf(":%s", conf.Server.HttpPort)
+	endPoint := fmt.Sprintf(":%s", conf.Server.HTTPPort)
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{

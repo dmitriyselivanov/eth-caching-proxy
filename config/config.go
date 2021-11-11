@@ -8,21 +8,25 @@ import (
 	"sync"
 )
 
+// Server represents server configuration
 type Server struct {
-	RunMode      string `mapstructure:"runmode"`
-	HttpPort     string `mapstructure:"httpport"`
-	ReadTimeout  int    `mapstructure:"readtimeout"`
+	RunMode     string `mapstructure:"runmode"`
+	HTTPPort    string `mapstructure:"httpport"`
+	ReadTimeout int    `mapstructure:"readtimeout"`
 	WriteTimeout int    `mapstructure:"writetimeout"`
 }
 
+// Cache represents cache configuration
 type Cache struct {
 	MaxBlocks int `mapstructure:"maxblocks"`
 }
 
+// Cloudflare represents cloudflare configuration
 type Cloudflare struct {
-	Url string
+	URL string
 }
 
+// Config represents configuration with server, cache and cloudflare configs
 type Config struct {
 	Server     Server     `mapstructure:"server"`
 	Cache      Cache      `mapstructure:"cache"`
@@ -31,6 +35,7 @@ type Config struct {
 
 var config *Config
 
+// GetConfig returns a config
 func GetConfig() *Config {
 	var once sync.Once
 	once.Do(func() {

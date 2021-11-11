@@ -8,12 +8,13 @@ import (
 	"math/big"
 )
 
-type blockCache struct {
+// LruBlockCache is a golang-lru cache for ethereum blocks
+type LruBlockCache struct {
 	cache *lru.Cache
 }
 
-// NewBlockCache creates an instance of blockCache
-func NewBlockCache() *blockCache {
+// NewBlockCache creates an instance of LruBlockCache
+func NewBlockCache() *LruBlockCache {
 	conf := config.GetConfig()
 
 	c, err := lru.New(conf.Cache.MaxBlocks)
@@ -21,14 +22,16 @@ func NewBlockCache() *blockCache {
 		log.Fatalln("cannot create lru cache")
 	}
 
-	return &blockCache{cache: c}
+	return &LruBlockCache{cache: c}
 }
 
-func (c *blockCache) AddBlock(block *model.Block) {
+// AddBlock adds a block to a cache
+func (c *LruBlockCache) AddBlock(block *model.Block) {
 	c.cache.Add(block.Number.String(), block)
 }
 
-func (c *blockCache) GetBlock(blockNumber *big.Int) (*model.Block, bool) {
+// GetBlock returns a block from cache and ok bool
+func (c *LruBlockCache) GetBlock(blockNumber *big.Int) (*model.Block, bool) {
 	block, ok := c.cache.Get(blockNumber.String())
 	if !ok {
 		return nil, false
