@@ -8,6 +8,7 @@
     - [Docker](#run-docker-compose)
     - [Build](#build)
     - [Tests](#tests)
+    - [Linter](#linter)
     - [Clean](#clean)
 - [Endpoints](#endpoints)
 - [Returned errors](#returned-http-error-codes)
@@ -20,6 +21,7 @@
 - Configuration via `yaml` and `.env` files using [Viper](https://github.com/spf13/viper)
 - Latest 20 blocks are not cached
 - Supports docker-compose
+- Supports Linter
 - Made with controller -> service -> repository pattern
 - Uses [Gin](https://github.com/gin-gonic/gin) as a REST API framework
 
@@ -55,6 +57,11 @@ make build
 ### Tests
 ```bash
 make test
+```
+
+### Linter
+```bash
+make lint
 ```
 
 ### Clean
